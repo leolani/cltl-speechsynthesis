@@ -1,0 +1,8 @@
+tensorflow<=1.9.0
+keras==2.2.4
+numpy<1.16
+pysptk==0.1.18
+
+google-cloud-texttospeech==2.2.0
+PyAudio==0.2.11
+

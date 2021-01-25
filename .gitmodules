@@ -1,0 +1,3 @@
+[submodule "leolani/speech_synthesis/WaveRNN"]
+	path = leolani/speech_synthesis/WaveRNN
+	url = https://github.com/fatchord/WaveRNN
