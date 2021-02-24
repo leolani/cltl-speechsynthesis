@@ -1,4 +1,3 @@
-import tempfile
 from google.cloud import texttospeech
 from typing import Optional
 
@@ -30,8 +29,8 @@ class WavenetAPITextToSpeech(AbstractTextToSpeech):
 
         self._log.debug("Booted (text -> speech)")
 
-    def on_text_to_speech(self, text, animation=None, play_file=True, save_file=True):
-        # type: (str, Optional[str], Optional[bool], Optional[bool]) -> None
+    def on_text_to_speech(self, text, animation=None):
+        # type: (str, Optional[str]) -> None
         """
         Say something through Text to Speech
 
@@ -39,37 +38,22 @@ class WavenetAPITextToSpeech(AbstractTextToSpeech):
         ----------
         text: str
         animation: str
-        save_file: bool
-        play_file: bool
         """
+        file = None
 
         for i in range(3):
             try:
                 synthesis_input = texttospeech.SynthesisInput(text=text)
                 response = self._client.synthesize_speech(input=synthesis_input, voice=self._voice,
                                                           audio_config=self._audio_config)
-                file = self._create_sound(response.audio_content)
+                file = self._create_audio(response.audio_content)
+                break
 
-                if play_file:
-                    self._play_file(file.name)
-
-                if not save_file:
-                    self._delete_file(file)
-
-                return
             except:
                 self._log.exception("Couldn't Synthesize Speech ({})".format(i + 1))
 
-    def _create_sound(self, mp3):
-        tmp_file = None
-        try:
-            tmp_file = tempfile.NamedTemporaryFile(delete=False)
-            with tmp_file:
-                tmp_file.write(mp3)
+        if self.play_audio:
+            self._play_file(file)
 
-            self._log.debug("Audio content written to file '{}'".format(tmp_file.name))
-
-        except:
-            self._log.exception("Failed to write temporary file")
-
-        return tmp_file
+        if not self.save_audio:
+            self._delete_file(file)

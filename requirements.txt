@@ -1,8 +1,17 @@
-tensorflow<=1.9.0
-keras==2.2.4
-numpy<1.16
-pysptk==0.1.18
-
+# WavenetAPI
 google-cloud-texttospeech==2.2.0
 PyAudio==0.2.11
+
+# WaveRNN
+numpy==1.16.2
+librosa==0.6.3
+numba==0.48
+matplotlib
+unidecode
+inflect
+nltk
+torch==1.7.1
+
+# Mozilla
+requests
 

@@ -8,7 +8,7 @@ import numpy as np
 import torch
 import utils
 from text import text_to_sequence, cmudict
-from text.symbols import symbols
+from text import symbols
 
 from inference_e2e import main
 
@@ -102,19 +102,19 @@ class GlowTextToSpeech(AbstractTextToSpeech):
         for i in range(3):
             try:
                 synthesis_input = main()
-                # file = self._create_sound(response.audio_content)
+                # file = self._create_audio(response.audio_content)
 
-                # if play_file:
+                # if play_audio:
                 #     self._play_file(file.name)
                 # 
-                # if not save_file:
+                # if not save_audio:
                 #     self._delete_file(file)
 
                 return
             except:
                 self._log.exception("Couldn't Synthesize Speech ({})".format(i + 1))
 
-    def _create_sound(self, mp3):
+    def _create_audio(self, mp3):
         tmp_file = None
         try:
             tmp_file = tempfile.NamedTemporaryFile(delete=False)

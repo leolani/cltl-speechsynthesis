@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Audios folder
+audios/*
+
+# Mac
+.idea
