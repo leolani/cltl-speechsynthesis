@@ -1,10 +1,14 @@
-from google.cloud import texttospeech
+import os
+from pathlib import Path
 from typing import Optional
 
-from leolani.speech_synthesis.abstract.text_to_speech import AbstractTextToSpeech
+from google.cloud import texttospeech
+
+from cltl.speech_synthesis.api import SpeechSynthesisInput, SpeechSynthesisOutput
+from cltl.speech_synthesis.implementation import SpeechSynthesisAbstractComponent
 
 
-class WavenetAPITextToSpeech(AbstractTextToSpeech):
+class WavenetAPITextToSpeech(SpeechSynthesisAbstractComponent):
     """
     System Text to Speech
 
@@ -14,11 +18,15 @@ class WavenetAPITextToSpeech(AbstractTextToSpeech):
         `Language Code <https://cloud.google.com/speech/docs/languages>`_
     """
     GENDER = 2  # "Female" or 1 "Male"
-    VOICE_TYPE = "en-US-Wavenet-J"
+    VOICE_TYPE = "en-US-Wavenet-H"
 
-    def __init__(self, language):
-        # type: (str) -> None
-        AbstractTextToSpeech.__init__(self, language)
+    def __init__(self, language: str, play_audio: Optional[bool] = True, save_audio: Optional[bool] = True,
+                 audios_dir: Optional[Path] = None) -> None:
+        SpeechSynthesisAbstractComponent.__init__(self, language, play_audio, save_audio, audios_dir)
+
+        # TODO Get rid of the need for the root_dir
+        root_dir = Path(__file__).parents[3]
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(root_dir / "config" / "google_cloud_key.json")
 
         self._client = texttospeech.TextToSpeechClient()
         self._voice = texttospeech.VoiceSelectionParams(language_code=language, name=self.VOICE_TYPE,
@@ -29,15 +37,14 @@ class WavenetAPITextToSpeech(AbstractTextToSpeech):
 
         self._log.debug("Booted (text -> speech)")
 
-    def on_text_to_speech(self, text, animation=None):
-        # type: (str, Optional[str]) -> None
+    def text_to_speech(self, text: SpeechSynthesisInput, audio_file_prefix: str = '') -> SpeechSynthesisOutput:
         """
         Say something through Text to Speech
 
         Parameters
         ----------
         text: str
-        animation: str
+        audio_file_prefix: str
         """
         file = None
 
@@ -46,7 +53,7 @@ class WavenetAPITextToSpeech(AbstractTextToSpeech):
                 synthesis_input = texttospeech.SynthesisInput(text=text)
                 response = self._client.synthesize_speech(input=synthesis_input, voice=self._voice,
                                                           audio_config=self._audio_config)
-                file = self._create_audio(response.audio_content)
+                file = self._create_audio(response.audio_content, audio_file_prefix=audio_file_prefix)
                 break
 
             except:
@@ -57,3 +64,6 @@ class WavenetAPITextToSpeech(AbstractTextToSpeech):
 
         if not self.save_audio:
             self._delete_file(file)
+            return None
+        else:
+            return str(file)

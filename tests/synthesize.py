@@ -1,16 +1,22 @@
-from leolani.speech_synthesis.system import WavenetAPITextToSpeech, WaveRNNTextToSpeech, MozillaTextToSpeech
+from cltl.speech_synthesis.wavenet_api import WavenetAPITextToSpeech
+from cltl.speech_synthesis.mozilla_tts import MozillaTextToSpeech
 
 application_language = "en-GB"
-text = 'Hi my name is Leolani'
+text = 'Hi'
 
 # # Wavenet API
-wvn_api_tts = WavenetAPITextToSpeech(application_language)
-wvn_api_tts.on_text_to_speech(text.format('API'))
+wvn_api_tts = WavenetAPITextToSpeech(application_language, save_audio=False)
+wvn_api_tts.text_to_speech(text.format('API'))
+#
+# # Mozilla TTS
+moz = MozillaTextToSpeech(application_language, save_audio=False)
+moz.text_to_speech(text.format('Mozilla TTS'))
 
-# # WaveRNN
-# wrnn = WaveRNNTextToSpeech(application_language)
-# wrnn.on_text_to_speech(text.format('WaveRNN'))
+# other tests
+# empty input, empty output (file exists), proper audio created (difficult but it might)
+# test when it breaks
+# tests are easier if rest is implemented
+# testing eventbus is also doable, but not needed now
 
-# Mozilla TTS
-moz = MozillaTextToSpeech(application_language)
-moz.on_text_to_speech(text.format('Mozilla TTS'))
+# integration? tests (kinda)
+# this should test that my API and the rest/eventbus are the same. should be trivial and not-worthy atm
