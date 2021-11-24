@@ -133,3 +133,4 @@ audios/*
 
 # Mac
 .idea
+.DS_Store

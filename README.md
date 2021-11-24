@@ -5,7 +5,7 @@ implemented.
 
 ### Description
 
-This package contains multiple implementations to create spoken language for any written text. The modules planned are:
+This package contains multiple implementations to create spoken language for any written text. The different voices implementeda are:
 
 - [X] WaveNet
 - [X] Mozilla-TTS
