@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
-from cltl.combot.infra.config.local import LocalConfigurationContainer
-
 # logging.config.fileConfig('config/logging.config')
 logger = logging.getLogger(__name__)
+
+
 # LocalConfigurationContainer.load_configuration()
 
 

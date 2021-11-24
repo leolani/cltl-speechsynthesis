@@ -27,7 +27,7 @@ class SpeechSynthesisAbstractComponent(SpeechSynthesisComponent):
 
     def create_filename(self, prefix=''):
         if prefix == '':
-            prefix = datetime.now().strftiøme('%Y-%m-%d-%H-%M')
+            prefix = datetime.now().strftime('%Y-%m-%d-%H-%M')
 
         name = "{}_{}.wav".format(prefix, self.__class__.__name__)
 

@@ -15,8 +15,8 @@ This package contains multiple implementations to create spoken language for any
 This repository uses Python >= 3.7. To set ip up you can run
 
 ```bash
-conda create --name cltl-tts python=3.7
-conda activate cltl-tts
+conda create --name cltl-speechsynthesis python=3.7
+conda activate cltl-speechsynthesis
 pip install -e .
 ```
 
@@ -27,6 +27,8 @@ pip install -e .
 To use this voices you need to create a project on
 the [Google Cloud Platform](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries) supporting
 Text-To-Speech APIs.
+
+Put the `google_cloud_key.json` file in the `config` folder of this repo. 
 
 ### Mozilla TTS
 
